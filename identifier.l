@@ -3,28 +3,28 @@
 #include<stdio.h>
 int count=0;
 %}
-op [+-*/]
-letter [a-zA-Z]
-digit [0-9]
+op [+\-\*\/\=\^\%\<\>]
+letter [a-zA-Z_]
+digit [0-9]+
 id {letter}+({letter}|{digit})*
-notid {digit}+{id}
 
 %%
-[\t\n]+ ;
-("int")|("float")|("char")|("case")|("default")|("if")|(“else”)|(“then”)|(“while”)|("for")|("printf")|("scanf") {printf("%s IS A KEYWORD\n",yytext);}
-{id} {printf("%s IS AN IDENTIFIER\n",yytext);count++;}
-{notid} {printf("%s IS NOT AN IDENTIFIER\n",yytext);}
+[%\t()]+ ;
+auto|double|if|static|break|else|int|struct|case|enum|long|switch|char|extern|near|typedef|const|float|continue|register|union|unsigned|void|while|default|do|goto|signed|while|signed|unsigned {printf("%s is a keyword\n",yytext);}
+{op} {printf("%s is an operator\n",yytext);}
+{id} {printf("%s is an identifier\n",yytext);count++;}
+{digit} {printf("%s is not an identifier\n",yytext);}
 
 %%
 int main()
 {
 FILE *fp;
 char file[10];
-printf("ENTER THE FILENAME:\n");
+printf("Enter the filename: ");
 scanf("%s",file);
 fp=fopen(file,"r");
 yyin=fp;
 yylex();
-printf("TOTAL IDENTIFIERS ARE=%d\n",count);
+printf("Total Number of identifiers are = %d\n",count);
 return 0;
 }
